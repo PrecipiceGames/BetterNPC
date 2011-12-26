@@ -8,10 +8,12 @@ import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.gui.Widget;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
+import com.precipicegames.tutorialsign.dialogs.DialogType;
+
 public class Tutorial {
 	ConfigurationSection conf;
 	String name;
-	HashMap<Player, TutorialWidget> tutorialWidgets;
+	HashMap<Player, DialogType> tutorialWidgets;
 	HashMap<Player, Boolean> guiEnabled;
 	Widget tutorialWidget;
 	enum TutorialState {

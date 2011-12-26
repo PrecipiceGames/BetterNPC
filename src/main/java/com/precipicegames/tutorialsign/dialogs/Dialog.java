@@ -1,5 +1,6 @@
-package com.precipicegames.tutorialsign;
+package com.precipicegames.tutorialsign.dialogs;
 
+import org.bukkit.Location;
 import org.getspout.spoutapi.gui.Color;
 import org.getspout.spoutapi.gui.ContainerType;
 import org.getspout.spoutapi.gui.GenericContainer;
@@ -9,13 +10,19 @@ import org.getspout.spoutapi.gui.RenderPriority;
 import org.getspout.spoutapi.gui.WidgetAnchor;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-public class TutorialWidget extends GenericContainer {
+import com.precipicegames.tutorialsign.DialogManager;
+import com.precipicegames.tutorialsign.Tutorial;
+
+public class Dialog extends GenericContainer {
 	private GenericContainer mscBody;
 	private int WIDTH;
 	private int HEIGHT;
 	private GenericLabel mscTestBox;
+	private Location location;
+	private double range;
+	private long time;
 
-	public TutorialWidget(Tutorial t , SpoutPlayer p)
+	public Dialog()
 	{
 		super();
 		WIDTH = 300;
@@ -61,6 +68,5 @@ public class TutorialWidget extends GenericContainer {
 	public void setText(String text) {
 		this.mscTestBox.setText(text);
 		this.mscTestBox.setDirty(true);
-		this.mscTestBox.a
 	}
 }
