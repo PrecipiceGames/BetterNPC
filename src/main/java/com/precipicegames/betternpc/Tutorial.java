@@ -1,4 +1,4 @@
-package com.precipicegames.tutorialsign;
+package com.precipicegames.betternpc;
 
 import java.util.HashMap;
 
@@ -8,7 +8,7 @@ import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.gui.Widget;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import com.precipicegames.tutorialsign.dialogs.DialogType;
+import com.precipicegames.betternpc.dialogs.DialogType;
 
 public class Tutorial {
 	ConfigurationSection conf;

@@ -10,8 +10,8 @@ import org.getspout.spoutapi.gui.RenderPriority;
 import org.getspout.spoutapi.gui.WidgetAnchor;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import com.precipicegames.tutorialsign.DialogManager;
-import com.precipicegames.tutorialsign.Tutorial;
+import com.precipicegames.betternpc.DialogManager;
+import com.precipicegames.betternpc.Tutorial;
 
 public class Dialog extends GenericContainer {
 	private GenericContainer mscBody;

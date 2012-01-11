@@ -1,4 +1,4 @@
-package com.precipicegames.tutorialsign;
+package com.precipicegames.betternpc;
 
 import java.io.File;
 
