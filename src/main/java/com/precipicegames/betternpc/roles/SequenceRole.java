@@ -2,6 +2,7 @@ package com.precipicegames.betternpc.roles;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Stack;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -10,35 +11,36 @@ import com.precipicegames.betternpc.ConfigDialog;
 import com.precipicegames.betternpc.GenericRoleList;
 import com.precipicegames.betternpc.NPC;
 import com.precipicegames.betternpc.Role;
-import com.precipicegames.betternpc.RoleFinishEvent;
-import com.precipicegames.betternpc.RoleList;
 
 
 public class SequenceRole extends GenericRoleList implements Role{
 	public HashMap<Player,Iterator<Role>> rolestatus;
-	private RoleList parent;
 	public SequenceRole() {
 		super();
+		rolestatus = new HashMap<Player,Iterator<Role>>();
 	}
-	public void performRole(Player p, NPC npc, RoleList parent) {
+	public void startRole(Player p, NPC npc, Stack<Role> s) {
 		Iterator<Role> currentRole = this.getRoleIterator();
-		if(currentRole.hasNext()) {
-			currentRole.next().startRole(p, npc, this);
-		}
-		this.parent = parent;
 		rolestatus.put(p, currentRole);
-		
-	}
-	public void handleFinished(Player p, NPC n ,Role r) {
-		Iterator<Role> currentRole = rolestatus.get(p);
-		if(currentRole == null)
-			return;
-		
 		if(currentRole.hasNext()) {
-			currentRole.next().startRole(p, n, this);
+			s.push(this);
+			currentRole.next().startRole(p, npc, s);
 		} else {
-			RoleFinishEvent e = new RoleFinishEvent(p, n, this, parent);
-			n.scheduleEvent(e);
+			Role r = s.pop();
+			r.handleFinished(p, npc, s);
+		}
+	}
+	public void handleFinished(Player p, NPC n , Stack<Role> s) {
+		Iterator<Role> currentRole = rolestatus.get(p);
+		if(currentRole == null) {
+			return;
+		}
+		if(currentRole.hasNext()) {
+			s.push(this);
+			currentRole.next().startRole(p, n, s);
+		} else {
+			Role r = s.pop();
+			r.handleFinished(p, n, s);
 			rolestatus.remove(p);
 		}
 	}
@@ -46,27 +48,17 @@ public class SequenceRole extends GenericRoleList implements Role{
 		return "Sequence Role";
 	}
 	public String getDetails() {
-		// TODO Auto-generated method stub
 		return this.getRoleCount() + " number of subroles";
 	}
 	public ConfigurationSection getConfig() {
-
-		return null;
+		return super.getConfig();
 	}
 	public void loadConfig(ConfigurationSection config) {
-		// TODO Auto-generated method stub
+		super.loadConfig(config);
 	}
 	public ConfigDialog getConfigureDialog() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-	public void startRole(Player p, NPC npc, RoleList parent) {
-		// TODO Auto-generated method stub
-		
-	}
-	public void finishRole(Player p, NPC npc, RoleList parent) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

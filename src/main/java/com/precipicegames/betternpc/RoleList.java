@@ -2,8 +2,6 @@ package com.precipicegames.betternpc;
 
 import java.util.Iterator;
 
-import org.bukkit.entity.Player;
-
 public interface RoleList {
 	public Role[] getRoles();
 	public int getRoleCount();
@@ -14,5 +12,4 @@ public interface RoleList {
 	public Iterator<Role> getRoleIterator();
 	public Role[] getRoles(Class<? extends Role> roletype);
 	public Role getRole(Class<? extends UniqueRole> roletype);
-	public void handleFinished(Player p, NPC npc, Role role);
 }

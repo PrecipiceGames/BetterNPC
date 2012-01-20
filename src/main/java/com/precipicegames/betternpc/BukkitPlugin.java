@@ -3,45 +3,38 @@ package com.precipicegames.betternpc;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-public class TutorialSign extends JavaPlugin{
+import com.topcat.npclib.NPCManager;
 
-	public static TutorialSign plugin;
+public class BukkitPlugin extends JavaPlugin implements Listener {
+
+	public static BukkitPlugin plugin;
 	public final Logger logger = Logger.getLogger("Minecraft");
-	public TutorialSignPlayerListener playerlistener = new TutorialSignPlayerListener(this);
-	public TutorialSignBlockListener blockListener = new TutorialSignBlockListener(this);
-	private YamlConfiguration config; 
-	
-	public HashMap<String, Tutorial> tutorials = new HashMap<String,Tutorial>();
+	protected NPCManager npcman;
+	private YamlConfiguration config;
 	
 	public void onEnable(){
 		final PluginDescriptionFile pdffile = this.getDescription();
-		this.logger.info("Plugin" + pdffile.getName() + " version " + pdffile.getVersion() + " is now enabled.");
-		
 		PluginManager pm = this.getServer().getPluginManager();
-		pm.registerEvent(Event.Type.PLAYER_INTERACT, this.playerlistener, Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.BLOCK_PLACE, this.playerlistener, Event.Priority.Normal, this);
+		npcman = new NPCManager(this);
 		
 		config = new YamlConfiguration();
 		File configFile = new File(getDataFolder(),"tutorials.yml");
-		config.addDefaults(new DefaultConfiguration());
 		try {
 			config.load(configFile);
 		} catch (FileNotFoundException e1) {
@@ -57,23 +50,11 @@ public class TutorialSign extends JavaPlugin{
 		} finally {
 			System.out.println(this + ": Loaded configuration file");
 		}
-		
-		loadTutorials();
-		System.out.println(this + ": Loaded " + tutorials.size() + " tutorial(s)");
+		plugin = this;
+		this.logger.info("Plugin" + pdffile.getName() + " version " + pdffile.getVersion() + " is now enabled.");
 		
 	}
 	
-	private void loadTutorials() {
-		ConfigurationSection sc = config.getConfigurationSection("tutorials");
-		if(sc == null)
-			return;
-		for(String key : sc.getKeys(false)) {
-			if(sc.isConfigurationSection(key)) {
-				tutorials.put(key, new Tutorial(key, sc.getConfigurationSection(key)));
-			}
-		}
-	}
-
 	public void onDisable(){
 		final PluginDescriptionFile pdffile = this.getDescription();
 		this.logger.info("Plugin" + pdffile.getName() + " version " + pdffile.getVersion() + " is now disabled.");
@@ -107,9 +88,5 @@ public class TutorialSign extends JavaPlugin{
 			}
 		}
 	return false;
-	}
-	public void runTutorial(Tutorial tut, Player p)
-	{
-		
 	}
 }

@@ -10,47 +10,39 @@ import com.precipicegames.betternpc.NPC;
 import com.precipicegames.betternpc.Role;
 import com.precipicegames.betternpc.UniqueRole;
 
-public class RangeRole implements Role, UniqueRole {
-	private Role active;
+public class RightClickRole extends SymbolicRole implements Role, UniqueRole {
+
 	public void startRole(Player p, NPC npc, Stack<Role> s) {
-		//Do nothing for this role
+		
 	}
-	public void setActiveRole(Role r) {
-		active = r;
-	}
-	
-	public Role getActiveRole(Role r) {
-		return active;
-	}
+
 	public String getName() {
 		// TODO Auto-generated method stub
-		return "Range Role";
+		return "Right Click Role";
 	}
 
 	public String getDetails() {
 		// TODO Auto-generated method stub
-		if(active != null) {
-			return active.getName() + " is the subrole";
-		} else {
-			return "No role configured";
-		}
+		return "Linked with";
 	}
 
 	public ConfigurationSection getConfig() {
 		// TODO Auto-generated method stub
-		return null;
+		return super.getConfig();
 	}
 
 	public void loadConfig(ConfigurationSection config) {
-		// TODO Auto-generated method stub
+		super.loadConfig(config);
 	}
 
 	public ConfigDialog getConfigureDialog() {
 		// TODO Auto-generated method stub
-		return null;
+		return super.getConfigureDialog();
 	}
+
 	public void handleFinished(Player p, NPC npc, Stack<Role> s) {
-		// TODO Auto-generated method stub
-		
+		Role r = s.pop();
+		r.handleFinished(p, npc, s);
 	}
+
 }

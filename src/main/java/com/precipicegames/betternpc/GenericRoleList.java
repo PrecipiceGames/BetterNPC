@@ -2,8 +2,10 @@ package com.precipicegames.betternpc;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
-import org.bukkit.entity.Player;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 
 public class GenericRoleList implements RoleList {
 	private ArrayList<Role> roles;
@@ -62,8 +64,34 @@ public class GenericRoleList implements RoleList {
 		// TODO Auto-generated method stub
 		return roles.iterator();
 	}
-	public void handleFinished(Player p, NPC n, Role role) {
-		// TODO Auto-generated method stub
-		
+	public ConfigurationSection getConfig() {
+		List<ConfigurationSection> subconfigs = new ArrayList<ConfigurationSection>();
+		MemoryConfiguration config = new MemoryConfiguration();
+		for(Role r : this.getRoles()) {
+			String type = RoleFactory.getName(r.getClass());
+			ConfigurationSection roleconfig = r.getConfig();
+			roleconfig.set("type", type);
+			subconfigs.add(roleconfig);
+		}
+		config.set("roles", subconfigs);
+		return config;
+	}
+	public void loadConfig(ConfigurationSection config) {
+		if(!config.isList("roles")) {
+			return;
+		}
+		List<?> l = config.getList("roles");
+		for(Object o: l) {
+			if(o instanceof ConfigurationSection) {
+				ConfigurationSection s = (ConfigurationSection) o;
+				if(s.isString("type")) {
+					Role r = null;
+					try {
+						r = RoleFactory.newRole(s.getString("type"),s);
+					} catch (Exception e) {	}
+					addRole(r);
+				}
+			}
+		}
 	}
 }

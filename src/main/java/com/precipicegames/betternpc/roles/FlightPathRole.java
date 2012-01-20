@@ -1,18 +1,18 @@
 package com.precipicegames.betternpc.roles;
 
+import java.util.Stack;
+
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import com.precipicegames.betternpc.ConfigDialog;
 import com.precipicegames.betternpc.NPC;
 import com.precipicegames.betternpc.Role;
-import com.precipicegames.betternpc.RoleList;
 
 public class FlightPathRole implements Role {
 
-	public void startRole(Player p, NPC npc, RoleList parent) {
+	public void startRole(Player p, NPC npc, Stack<Role> parent) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	public String getName() {
@@ -38,6 +38,11 @@ public class FlightPathRole implements Role {
 	public ConfigDialog getConfigureDialog() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void handleFinished(Player p, NPC npc, Stack<Role> s) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

@@ -8,32 +8,27 @@ import org.bukkit.entity.Player;
 import com.precipicegames.betternpc.ConfigDialog;
 import com.precipicegames.betternpc.NPC;
 import com.precipicegames.betternpc.Role;
-import com.precipicegames.betternpc.UniqueRole;
 
-public class RangeRole implements Role, UniqueRole {
-	private Role active;
+public class MessageRole implements Role {
+	private String text = "Default text";
+	public void handleFinished(Player p, NPC npc, Stack<Role> s) {
+		Role r = s.pop();
+		r.handleFinished(p, npc, s);
+	}
+
 	public void startRole(Player p, NPC npc, Stack<Role> s) {
-		//Do nothing for this role
+		p.sendMessage(getText());
+		handleFinished(p, npc, s);
 	}
-	public void setActiveRole(Role r) {
-		active = r;
-	}
-	
-	public Role getActiveRole(Role r) {
-		return active;
-	}
+
 	public String getName() {
 		// TODO Auto-generated method stub
-		return "Range Role";
+		return null;
 	}
 
 	public String getDetails() {
 		// TODO Auto-generated method stub
-		if(active != null) {
-			return active.getName() + " is the subrole";
-		} else {
-			return "No role configured";
-		}
+		return null;
 	}
 
 	public ConfigurationSection getConfig() {
@@ -43,14 +38,20 @@ public class RangeRole implements Role, UniqueRole {
 
 	public void loadConfig(ConfigurationSection config) {
 		// TODO Auto-generated method stub
+
 	}
 
 	public ConfigDialog getConfigureDialog() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	public void handleFinished(Player p, NPC npc, Stack<Role> s) {
-		// TODO Auto-generated method stub
-		
+
+	public void setText(String text) {
+		this.text = text;
 	}
+
+	public String getText() {
+		return text;
+	}
+
 }
