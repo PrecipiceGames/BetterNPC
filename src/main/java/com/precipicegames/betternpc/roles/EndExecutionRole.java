@@ -3,47 +3,41 @@ package com.precipicegames.betternpc.roles;
 import java.util.Stack;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Player;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
-import com.precipicegames.betternpc.ConfigDialog;
 import com.precipicegames.betternpc.NPC;
 import com.precipicegames.betternpc.Role;
+import com.precipicegames.betternpc.roles.config.BlankConfigurator;
+import com.precipicegames.tutorialsign.widgets.Dialog;
 
 public class EndExecutionRole implements Role {
 
 	public void handleFinished(Player p, NPC npc, Stack<Role> s) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void startRole(Player p, NPC npc, Stack<Role> s) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "End Execution";
 	}
 
 	public String getDetails() {
-		// TODO Auto-generated method stub
-		return null;
+		return "";
 	}
 
 	public ConfigurationSection getConfig() {
-		// TODO Auto-generated method stub
-		return null;
+		return new MemoryConfiguration();
 	}
 
 	public void loadConfig(ConfigurationSection config) {
-		// TODO Auto-generated method stub
-
 	}
 
-	public ConfigDialog getConfigureDialog() {
+	public Dialog getConfigureDialog(SpoutPlayer p, NPC npc, Stack<Dialog> d) {
 		// TODO Auto-generated method stub
-		return null;
+		return new BlankConfigurator(p,npc,d);
 	}
 
 }

@@ -7,11 +7,12 @@ import java.util.Stack;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Player;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
-import com.precipicegames.betternpc.ConfigDialog;
 import com.precipicegames.betternpc.NPC;
 import com.precipicegames.betternpc.Role;
 import com.precipicegames.betternpc.RoleList;
+import com.precipicegames.tutorialsign.widgets.Dialog;
 
 public class SymbolicRole implements Role {
 	private ArrayList<Integer> link;
@@ -57,6 +58,10 @@ public class SymbolicRole implements Role {
 	public ConfigurationSection getConfig() {
 		// TODO Auto-generated method stub
 		MemoryConfiguration config = new MemoryConfiguration();
+		config.set("node", getLinkString());
+		return config;
+	}
+	public String getLinkString() {
 		String s = "";
 		for(Integer I : link) {
 			if(!s.isEmpty()) {
@@ -64,13 +69,11 @@ public class SymbolicRole implements Role {
 			}
 			s += I.toString();
 		}
-		config.set("node", s);
-		return config;
+		return s;
 	}
-
-	public void loadConfig(ConfigurationSection config) {
-		String nodelist = config.getString("node","");
-		String[] nodes = nodelist.split(":");
+	public void setLink(String linkPath) {
+		link.clear();
+		String[] nodes = linkPath.split(":");
 		for(String s : nodes) {
 			if(s.isEmpty()) {
 				continue;
@@ -79,12 +82,16 @@ public class SymbolicRole implements Role {
 			link.add(i);
 		}
 	}
-	public ConfigDialog getConfigureDialog() {
-		// TODO Auto-generated method stub
-		return null;
+	public void loadConfig(ConfigurationSection config) {
+		String nodelist = config.getString("node","");
+		this.setLink(nodelist);
 	}
 	public void handleFinished(Player p, NPC npc, Stack<Role> s) {
 		Role r = s.pop();
 		r.handleFinished(p, npc, s);
+	}
+	public Dialog getConfigureDialog(SpoutPlayer p, NPC npc, Stack<Dialog> d) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

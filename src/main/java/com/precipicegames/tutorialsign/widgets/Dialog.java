@@ -1,4 +1,4 @@
-package com.precipicegames.tutorialsign.dialogs;
+package com.precipicegames.tutorialsign.widgets;
 
 import org.bukkit.Location;
 import org.getspout.spoutapi.gui.Color;
@@ -11,10 +11,9 @@ import org.getspout.spoutapi.gui.WidgetAnchor;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class Dialog extends GenericContainer {
-	private GenericContainer mscBody;
-	private int WIDTH;
-	private int HEIGHT;
-	private GenericLabel mscTestBox;
+	protected GenericContainer mscBody;
+	public final int WIDTH = 300;
+	public final int HEIGHT = 100;
 	private Location location;
 	private double range;
 	private long time;
@@ -22,8 +21,6 @@ public class Dialog extends GenericContainer {
 	public Dialog()
 	{
 		super();
-		WIDTH = 300;
-		HEIGHT = 100;
 		GenericGradient bground = new GenericGradient();
 		GenericGradient fground = new GenericGradient();
 		GenericContainer msc = new GenericContainer();
@@ -32,8 +29,6 @@ public class Dialog extends GenericContainer {
 		mscBody = new GenericContainer();
 		mscWindow.setLayout(ContainerType.VERTICAL);
 		mscWindow.setMargin(5);
-		mscTestBox = new GenericLabel();
-		mscBody.addChild(mscTestBox);
 		bground.setHeight(HEIGHT);
 		bground.setWidth(WIDTH);
 		bground.setColor(new Color(127,127,127));
@@ -60,10 +55,5 @@ public class Dialog extends GenericContainer {
 		msc.insertChild(1,bground);
 		msc.insertChild(2, fground);
 		this.addChild(msc);
-	}
-
-	public void setText(String text) {
-		this.mscTestBox.setText(text);
-		this.mscTestBox.setDirty(true);
 	}
 }

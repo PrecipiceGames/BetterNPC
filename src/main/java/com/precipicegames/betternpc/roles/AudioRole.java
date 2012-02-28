@@ -9,9 +9,9 @@ import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.precipicegames.betternpc.BukkitPlugin;
-import com.precipicegames.betternpc.ConfigDialog;
 import com.precipicegames.betternpc.NPC;
 import com.precipicegames.betternpc.Role;
+import com.precipicegames.tutorialsign.widgets.Dialog;
 
 public class AudioRole implements Role {
 	private String audioUrl = null;
@@ -46,11 +46,6 @@ public class AudioRole implements Role {
 		config.getString("url", null);
 	}
 
-	public ConfigDialog getConfigureDialog() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public void handleFinished(Player p, NPC npc, Stack<Role> s) {
 	}
 
@@ -60,6 +55,11 @@ public class AudioRole implements Role {
 
 	public String getAudioUrl() {
 		return audioUrl;
+	}
+
+	public Dialog getConfigureDialog(SpoutPlayer p, NPC npc, Stack<Dialog> d) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

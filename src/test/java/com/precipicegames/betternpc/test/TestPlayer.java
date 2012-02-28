@@ -1,6 +1,7 @@
 package com.precipicegames.betternpc.test;
 
 import java.net.InetSocketAddress;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import java.util.UUID;
 
 import org.bukkit.Achievement;
 import org.bukkit.Effect;
+import org.bukkit.EntityEffect;
 import org.bukkit.GameMode;
 import org.bukkit.Instrument;
 import org.bukkit.Location;
@@ -21,10 +23,13 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Snowball;
 import org.bukkit.entity.Vehicle;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.map.MapView;
@@ -32,6 +37,8 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 public class TestPlayer implements Player {
@@ -691,6 +698,136 @@ public class TestPlayer implements Player {
 	public void updateInventory() {
 		// TODO Auto-generated method stub
 
+	}
+
+	public Player getKiller() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void playEffect(EntityEffect arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean teleport(Location arg0, TeleportCause arg1) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean teleport(Entity arg0, TeleportCause arg1) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public long getFirstPlayed() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public long getLastPlayed() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public boolean hasPlayedBefore() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public Set<String> getListeningPluginChannels() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void sendPluginMessage(Plugin arg0, String arg1, byte[] arg2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean getAllowFlight() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public float getExp() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public void giveExp(int arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setAllowFlight(boolean arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setBedSpawnLocation(Location arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setExp(float arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean addPotionEffect(PotionEffect arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean addPotionEffect(PotionEffect arg0, boolean arg1) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean addPotionEffects(Collection<PotionEffect> arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public Collection<PotionEffect> getActivePotionEffects() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean hasPotionEffect(PotionEffectType arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public <T extends Projectile> T launchProjectile(Class<? extends T> arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void removePotionEffect(PotionEffectType arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public EntityType getType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean canSee(Player arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public void hidePlayer(Player arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void showPlayer(Player arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

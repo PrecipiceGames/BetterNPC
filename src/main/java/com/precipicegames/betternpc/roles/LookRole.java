@@ -6,12 +6,13 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Player;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.precipicegames.betternpc.BukkitPlugin;
-import com.precipicegames.betternpc.ConfigDialog;
 import com.precipicegames.betternpc.LocationConfigSerializer;
 import com.precipicegames.betternpc.NPC;
 import com.precipicegames.betternpc.Role;
+import com.precipicegames.tutorialsign.widgets.Dialog;
 
 public class LookRole implements Role {
 	private boolean targetplayer = true;
@@ -50,13 +51,13 @@ public class LookRole implements Role {
 		}
 	}
 
-	public ConfigDialog getConfigureDialog() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public void handleFinished(Player p, NPC npc, Stack<Role> s) {
 		Role r = s.pop();
 		r.handleFinished(p, npc, s);
+	}
+
+	public Dialog getConfigureDialog(SpoutPlayer p, NPC npc, Stack<Dialog> d) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -4,6 +4,9 @@ import java.util.Stack;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.getspout.spoutapi.player.SpoutPlayer;
+
+import com.precipicegames.tutorialsign.widgets.Dialog;
 
 public interface Role extends RoleFinishHandler {
 	public void startRole(Player p, NPC npc, Stack<Role> s);
@@ -11,5 +14,5 @@ public interface Role extends RoleFinishHandler {
 	public String getDetails();
 	public ConfigurationSection getConfig();
 	public void loadConfig(ConfigurationSection config);
-	public ConfigDialog getConfigureDialog();
+	public Dialog getConfigureDialog(SpoutPlayer p,NPC npc,Stack<Dialog> d);
 }

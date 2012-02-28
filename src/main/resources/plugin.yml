@@ -1,15 +1,32 @@
-author: lachy2901
+author: lachy2901, dotblank	
 database: false
-description: Spout enabled audio tutorial system.
-main: com.precipicegames.tutorialsign.TutorialSign
-name: TutorialSign
+description: Spout enabled NPC management system
+main: com.precipicegames.betternpc.BukkitPlugin
+name: BetterNPC
 startup: postworld
 url: https://github.com/PrecipiceGames/TutorialSign
 version: '1.0'
 permissions:
-    tutorialsign.place:
-        description: Lets you place Tutorial Signs.
+    npc.*:
+        description: Super node for admins.
+        children:
+           npc.place: true
+           npc.test: true
+           npc.edit: true
+        default: op
+    npc.place:
+        description: Lets you place an npc.
+    npc.test:
+        description: Lets you place an npc.
+    npc.edit:
+        description: Lets you edit an npc.
 commands:
-    tut:
-        aliases: tutorial
-        usage: /tut stop or /tut play <category> <content>
+    nplace:
+        permission: npc.place
+        usage: /npc - places a default npc at current player location
+    ntest:
+        permission: npc.test
+        usage: /npc - Populates the last selected npc with test code
+    nedit:
+        permission: npc.edit
+        usage: /nedit - Populates the last selected npc with test code

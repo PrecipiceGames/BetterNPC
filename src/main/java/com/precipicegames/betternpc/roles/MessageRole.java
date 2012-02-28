@@ -3,11 +3,13 @@ package com.precipicegames.betternpc.roles;
 import java.util.Stack;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Player;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
-import com.precipicegames.betternpc.ConfigDialog;
 import com.precipicegames.betternpc.NPC;
 import com.precipicegames.betternpc.Role;
+import com.precipicegames.tutorialsign.widgets.Dialog;
 
 public class MessageRole implements Role {
 	private String text = "Default text";
@@ -23,27 +25,22 @@ public class MessageRole implements Role {
 
 	public String getName() {
 		// TODO Auto-generated method stub
-		return null;
+		return "Messege Role";
 	}
 
 	public String getDetails() {
 		// TODO Auto-generated method stub
-		return null;
+		return text;
 	}
 
 	public ConfigurationSection getConfig() {
-		// TODO Auto-generated method stub
-		return null;
+		MemoryConfiguration config = new MemoryConfiguration();
+		config.set("message", this.text);
+		return config;
 	}
 
 	public void loadConfig(ConfigurationSection config) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public ConfigDialog getConfigureDialog() {
-		// TODO Auto-generated method stub
-		return null;
+		this.text = config.getString("message", "Default text");
 	}
 
 	public void setText(String text) {
@@ -52,6 +49,11 @@ public class MessageRole implements Role {
 
 	public String getText() {
 		return text;
+	}
+
+	public Dialog getConfigureDialog(SpoutPlayer p, NPC npc, Stack<Dialog> d) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

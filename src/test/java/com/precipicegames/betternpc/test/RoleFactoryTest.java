@@ -14,40 +14,17 @@ import org.junit.Test;
 
 import com.precipicegames.betternpc.Role;
 import com.precipicegames.betternpc.RoleFactory;
-import com.precipicegames.betternpc.roles.AudioRole;
 import com.precipicegames.betternpc.roles.EndExecutionRole;
 import com.precipicegames.betternpc.roles.LookRole;
 import com.precipicegames.betternpc.roles.MessageRole;
 import com.precipicegames.betternpc.roles.RandomRole;
 import com.precipicegames.betternpc.roles.SequenceRole;
+import com.precipicegames.betternpc.roles.SymbolicRole;
 
-import org.bukkit.Achievement;
-import org.bukkit.Effect;
-import org.bukkit.GameMode;
-import org.bukkit.Instrument;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Note;
-import org.bukkit.Server;
-import org.bukkit.Statistic;
-import org.bukkit.World;
-import org.bukkit.block.Block;
+
 import org.bukkit.configuration.MemoryConfiguration;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Egg;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Snowball;
-import org.bukkit.entity.Vehicle;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.map.MapView;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionAttachment;
-import org.bukkit.permissions.PermissionAttachmentInfo;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.util.Vector;
+import org.bukkit.configuration.file.YamlConfiguration;
+
 
 public class RoleFactoryTest {
 
@@ -82,6 +59,41 @@ public class RoleFactoryTest {
 		} catch (Exception e) {
 			fail("Could not create the object");
 			e.printStackTrace();
+		}
+	}
+	@Test
+	public void testPersistance() {
+		try {
+			RandomRole role1 = new RandomRole();
+			SequenceRole role2 = new SequenceRole();
+			RandomRole role3 = new RandomRole();
+			MessageRole message = new MessageRole();
+			SymbolicRole symrole = new SymbolicRole();
+			message.setText("Test Event Message");
+			role1.addRole(role2);
+			TestPlayer testp = new TestPlayer();
+			System.out.println("player: " + testp.hashCode());
+			role2.addRole(role3);
+			role3.addRole(message);
+			role1.addRole(message);
+			role1.addRole(symrole);
+			YamlConfiguration yaml = new YamlConfiguration();
+			yaml.set("cat", role1.getConfig());
+			String filedata = yaml.saveToString();
+			System.out.println(filedata);
+			
+			
+			RandomRole rRole = new RandomRole();
+			YamlConfiguration persistance = new YamlConfiguration();
+			persistance.loadFromString(filedata);
+			System.out.println(persistance.saveToString());
+			rRole.loadConfig(persistance.getConfigurationSection("cat"));
+			YamlConfiguration p2 = new YamlConfiguration();
+			p2.set("cat", rRole.getConfig());
+			System.out.println(p2.saveToString());
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("Error testing logic");
 		}
 	}
 	@Test

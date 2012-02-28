@@ -3,12 +3,15 @@ package com.precipicegames.betternpc;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Stack;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
-import org.bukkit.entity.Player;
+import org.getspout.spoutapi.gui.GenericPopup;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
+import com.precipicegames.tutorialsign.widgets.Dialog;
 import com.topcat.npclib.entity.HumanNPC;
 
 public class NPC implements RoleList {
@@ -37,29 +40,19 @@ public class NPC implements RoleList {
 	public NPC(String displayname, BukkitPlugin p, String id, ConfigurationSection cs){
 		roles = new ArrayList<Role>();
 		plugin = p;
-		name = "Default name";
+		name = displayname;
 		this.id = id;
 		this.config = cs.getConfigurationSection(id);
 		load();
-		respawn();
 	}
 	
 	private void load() {
 		name = config.getString("name", "Default Name");
-		ConfigurationSection loc;
 		if(config.isConfigurationSection("location")) {
-			loc = config.getConfigurationSection("location");
+			this.spawnloc = LocationConfigSerializer.fromConfig(config.getConfigurationSection("location"),this.plugin.getServer());
 		} else {
-			loc = new MemoryConfiguration();
+			this.spawnloc = LocationConfigSerializer.fromConfig(new MemoryConfiguration(),this.plugin.getServer());
 		}
-		double x = loc.getDouble("x", 0.0);
-		double y = loc.getDouble("y", 0.0);
-		double z = loc.getDouble("x", 0.0);
-		float yaw = (float) loc.getDouble("yaw",0.0);
-		float pitch = (float) loc.getDouble("pitch",0.0);
-		String world = loc.getString("world", plugin.getServer().getWorlds().get(0).getName());
-		this.spawnloc = new Location(plugin.getServer().getWorld(world), x, y, z, yaw, pitch);
-		
 		//Clear out old entries
 		while(getRoleCount() >= 1) {
 			//This will always delete an element
@@ -85,6 +78,9 @@ public class NPC implements RoleList {
 	}
 	private void invalid() {
 		
+	}
+	public ConfigurationSection save() {
+		return config;
 	}
 
 	public Location getCurrentLocation() {
@@ -153,10 +149,22 @@ public class NPC implements RoleList {
 	public Iterator<Role> getRoleIterator() {
 		return roles.iterator();
 	}
-	public void handleFinished(Player p, NPC n,Role role) {
-		// TODO Auto-generated method stub
-	}
+	
 	public void scheduleEvent(Runnable e) {
 		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, e);
+	}
+
+	public void configure(SpoutPlayer p) {
+		Stack<Dialog> dialogs = new Stack<Dialog>();
+		NPCconfigurator d = new NPCconfigurator(p,this,dialogs);
+		GenericPopup popup = new GenericPopup();
+		popup.attachWidget(this.plugin, d);
+	}
+
+	public void setName(String text) {
+		if(this.humannpc != null) {
+		this.humannpc.setName(text);
+		}
+		this.name = text;
 	}
 }

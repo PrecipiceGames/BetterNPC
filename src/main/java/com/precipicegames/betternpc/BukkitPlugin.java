@@ -3,27 +3,31 @@ package com.precipicegames.betternpc;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.logging.Logger;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.topcat.npclib.NPCManager;
 
 public class BukkitPlugin extends JavaPlugin implements Listener {
 
 	public static BukkitPlugin plugin;
+	public static DialogManager dialog;
+	public HashMap<String,NPC> LoadedNPC;
+	public HashSet<Player> editors;
 	public final Logger logger = Logger.getLogger("Minecraft");
 	protected NPCManager npcman;
 	private YamlConfiguration config;
@@ -31,7 +35,11 @@ public class BukkitPlugin extends JavaPlugin implements Listener {
 	public void onEnable(){
 		final PluginDescriptionFile pdffile = this.getDescription();
 		PluginManager pm = this.getServer().getPluginManager();
+		
+		this.LoadedNPC = new HashMap<String,NPC>();
+		this.editors = new HashSet<Player>();
 		npcman = new NPCManager(this);
+		dialog = new DialogManager(this);
 		
 		config = new YamlConfiguration();
 		File configFile = new File(getDataFolder(),"tutorials.yml");
@@ -51,8 +59,8 @@ public class BukkitPlugin extends JavaPlugin implements Listener {
 			System.out.println(this + ": Loaded configuration file");
 		}
 		plugin = this;
+		pm.registerEvents(this, this);
 		this.logger.info("Plugin" + pdffile.getName() + " version " + pdffile.getVersion() + " is now enabled.");
-		
 	}
 	
 	public void onDisable(){
@@ -66,25 +74,31 @@ public class BukkitPlugin extends JavaPlugin implements Listener {
 	}
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args){
-		SpoutPlayer splayer = (SpoutPlayer) sender;
-		File confFile = new File("tutorials.yml");
-		FileConfiguration config = YamlConfiguration.loadConfiguration(confFile);
-		if (cmd.getName().equalsIgnoreCase("tut")){
-			if (args[0] != null){
-				if (args[0].equalsIgnoreCase("stop")){
-					SpoutManager.getSoundManager().stopMusic(splayer);
-					splayer.sendMessage(ChatColor.DARK_GREEN + "The tutorial has stopped playing.");
-					return true;
-				}else if (args[0].equalsIgnoreCase("play")){
-					if (args[1] != null && args[2] != null){
-						if (splayer.isSpoutCraftEnabled()){
-							String url = config.getString("tutorials.categories." + args[1] + "." + args[2] + ".url");
-							SpoutManager.getSoundManager().playCustomMusic(plugin, splayer, url, true);
-						}else{
-							splayer.sendMessage(ChatColor.RED + "You need SpoutCraft to listen to tutorials!");
-						}
-					}
-				}
+		if(!(sender instanceof Player)) {
+			sender.sendMessage("This command must be used by a player!");
+			return true;
+		}
+		Player player = (Player) sender;
+		if (cmd.getName().equalsIgnoreCase("nplace")){
+			// Create an NPC, We must create a new configuration section in which the npc will get its construction details
+			ConfigurationSection cs = LocationConfigSerializer.toConfig(player.getLocation());
+			MemoryConfiguration npcConfig = new MemoryConfiguration();
+			npcConfig.set("location", cs);
+			NPC npc = new NPC("DefaultNPC", this, npcConfig);
+			//Actually spawn the npc
+			npc.respawn();
+			return true;
+		}
+		if (cmd.getName().equalsIgnoreCase("nedit")){
+			if(!player.hasPermission("npc.edit")) {
+				player.sendMessage("You do not have permission to execute that command");
+			}
+			if(this.editors.contains(player)) {
+				this.editors.remove(player);
+				player.sendMessage("You are no longer editing npcs!");
+			} else {
+				this.editors.add(player);
+				player.sendMessage("You can now edit NPCs!");
 			}
 		}
 	return false;

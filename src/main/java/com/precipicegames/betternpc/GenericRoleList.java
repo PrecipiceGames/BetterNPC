@@ -3,6 +3,7 @@ package com.precipicegames.betternpc;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -61,7 +62,6 @@ public class GenericRoleList implements RoleList {
 		return null;
 	}
 	public Iterator<Role> getRoleIterator() {
-		// TODO Auto-generated method stub
 		return roles.iterator();
 	}
 	public ConfigurationSection getConfig() {
@@ -82,14 +82,18 @@ public class GenericRoleList implements RoleList {
 		}
 		List<?> l = config.getList("roles");
 		for(Object o: l) {
-			if(o instanceof ConfigurationSection) {
-				ConfigurationSection s = (ConfigurationSection) o;
+			MemoryConfiguration mem = new MemoryConfiguration();
+			System.out.println(o.getClass());
+			if(o instanceof Map<?,?>) {
+				@SuppressWarnings("unchecked")
+				Map <String,Object> m = (Map<String, Object>) o;
+				ConfigurationSection s = mem.createSection("dummy",m);
 				if(s.isString("type")) {
 					Role r = null;
 					try {
 						r = RoleFactory.newRole(s.getString("type"),s);
+						addRole(r);
 					} catch (Exception e) {	}
-					addRole(r);
 				}
 			}
 		}
