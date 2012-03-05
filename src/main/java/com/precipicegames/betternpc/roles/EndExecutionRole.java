@@ -10,34 +10,34 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 import com.precipicegames.betternpc.NPC;
 import com.precipicegames.betternpc.Role;
 import com.precipicegames.betternpc.roles.config.BlankConfigurator;
-import com.precipicegames.tutorialsign.widgets.Dialog;
+import com.precipicegames.betternpc.widgets.Dialog;
 
 public class EndExecutionRole implements Role {
 
-	public void handleFinished(Player p, NPC npc, Stack<Role> s) {
-	}
+  public void handleFinished(Player p, NPC npc, Stack<Role> s) {
+  }
 
-	public void startRole(Player p, NPC npc, Stack<Role> s) {
-	}
+  public void startRole(Player p, NPC npc, Stack<Role> s) {
+  }
 
-	public String getName() {
-		return "End Execution";
-	}
+  public String getName() {
+    return "End Execution";
+  }
 
-	public String getDetails() {
-		return "";
-	}
+  public String getDetails() {
+    return "";
+  }
 
-	public ConfigurationSection getConfig() {
-		return new MemoryConfiguration();
-	}
+  public ConfigurationSection getConfig() {
+    return new MemoryConfiguration();
+  }
 
-	public void loadConfig(ConfigurationSection config) {
-	}
+  public void loadConfig(ConfigurationSection config) {
+  }
 
-	public Dialog getConfigureDialog(SpoutPlayer p, NPC npc, Stack<Dialog> d) {
-		// TODO Auto-generated method stub
-		return new BlankConfigurator(p,npc,d);
-	}
+  public Dialog getConfigureDialog(SpoutPlayer p, NPC npc, Stack<Dialog> d) {
+    // TODO Auto-generated method stub
+    return new BlankConfigurator(p, npc, d);
+  }
 
 }

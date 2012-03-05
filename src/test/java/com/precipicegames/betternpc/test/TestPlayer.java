@@ -20,6 +20,7 @@ import org.bukkit.Server;
 import org.bukkit.Statistic;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.conversations.Conversation;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.Entity;
@@ -30,9 +31,13 @@ import org.bukkit.entity.Snowball;
 import org.bukkit.entity.Vehicle;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
+import org.bukkit.inventory.InventoryView.Property;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.map.MapView;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;
@@ -826,6 +831,101 @@ public class TestPlayer implements Player {
 	}
 
 	public void showPlayer(Player arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void closeInventory() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public ItemStack getItemOnCursor() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public InventoryView getOpenInventory() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public InventoryView openEnchanting(Location arg0, boolean arg1) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public InventoryView openInventory(Inventory arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void openInventory(InventoryView arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public InventoryView openWorkbench(Location arg0, boolean arg1) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void setItemOnCursor(ItemStack arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean setWindowProperty(Property arg0, int arg1) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public List<MetadataValue> getMetadata(String arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean hasMetadata(String arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public void removeMetadata(String arg0, Plugin arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setMetadata(String arg0, MetadataValue arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void abandonConversation(Conversation arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void acceptConversationInput(String arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean beginConversation(Conversation arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean isConversing() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public void sendMessage(String[] arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public <T> void playEffect(Location arg0, Effect arg1, T arg2) {
 		// TODO Auto-generated method stub
 		
 	}

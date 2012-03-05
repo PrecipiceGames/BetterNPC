@@ -13,30 +13,38 @@ import com.precipicegames.betternpc.roles.RightClickRole;
 
 public class EventDispatcher implements Listener {
 
-	private BukkitPlugin plugin;
+  private BukkitPlugin plugin;
 
-	public EventDispatcher(BukkitPlugin p) {
-		this.plugin = p;
-	}
-	@EventHandler
-	public void onPlayerInteractEntityEvent(PlayerInteractEntityEvent event) {
-		if(plugin.npcman.isNPC(event.getRightClicked())) {
-			if(event.isCancelled()) {return;}
-			
-			String id = plugin.npcman.getNPCIdFromEntity(event.getRightClicked());
-			NPC n = plugin.LoadedNPC.get(id);
-			if(n == null) {return;}
-			
-			if(plugin.editors.contains(event.getPlayer())) {
-				SpoutPlayer p = SpoutManager.getPlayer(event.getPlayer());
-				n.configure(p);
-			} else {
-				RightClickRole role = (RightClickRole)n.getRole(RightClickRole.class);
-				if(role == null) {return;}
-				Stack<Role> s = new Stack<Role>();
-				s.push(new EndExecutionRole());
-				role.startRole(event.getPlayer(), n, s);
-			}
-		}
-	}
+  public EventDispatcher(BukkitPlugin p) {
+    this.plugin = p;
+  }
+
+  @EventHandler
+  public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+    if (plugin.npcman.isNPC(event.getRightClicked())) {
+      if (event.isCancelled()) {
+        return;
+      }
+
+      String id = plugin.npcman.getNPCIdFromEntity(event.getRightClicked());
+      NPC n = plugin.LoadedNPC.get(id);
+      System.out.println("clicked an entity");
+      if (n == null) {
+        return;
+      }
+
+      if (plugin.editors.contains(event.getPlayer())) {
+        SpoutPlayer p = SpoutManager.getPlayer(event.getPlayer());
+        n.configure(p);
+      } else {
+        RightClickRole role = (RightClickRole) n.getRole(RightClickRole.class);
+        if (role == null) {
+          return;
+        }
+        Stack<Role> s = new Stack<Role>();
+        s.push(new EndExecutionRole());
+        role.startRole(event.getPlayer(), n, s);
+      }
+    }
+  }
 }

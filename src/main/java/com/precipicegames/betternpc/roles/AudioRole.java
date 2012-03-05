@@ -11,55 +11,58 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 import com.precipicegames.betternpc.BukkitPlugin;
 import com.precipicegames.betternpc.NPC;
 import com.precipicegames.betternpc.Role;
-import com.precipicegames.tutorialsign.widgets.Dialog;
+import com.precipicegames.betternpc.roles.config.AudioConfigurator;
+import com.precipicegames.betternpc.widgets.Dialog;
 
 public class AudioRole implements Role {
-	private String audioUrl = null;
-	public void startRole(Player p, NPC npc, Stack<Role> s) {
-		SpoutPlayer sp = SpoutManager.getPlayer(p);
-		if(this.getAudioUrl() != null && sp.isSpoutCraftEnabled()) {
-			SpoutManager.getSoundManager().playCustomMusic(BukkitPlugin.plugin, sp, this.getAudioUrl(), false);
-		}
-		Role r = s.pop();
-		r.handleFinished(p, npc, s);
-	}
+  private String audioUrl = null;
 
-	public String getName() {
-		// TODO Auto-generated method stub
-		return "Audio Role";
-	}
+  public void startRole(Player p, NPC npc, Stack<Role> s) {
+    SpoutPlayer sp = SpoutManager.getPlayer(p);
+    if (this.getAudioUrl() != null && sp.isSpoutCraftEnabled()) {
+      SpoutManager.getSoundManager().playCustomMusic(BukkitPlugin.plugin, sp,
+          this.getAudioUrl(), false);
+    }
+    Role r = s.pop();
+    r.handleFinished(p, npc, s);
+  }
 
-	public String getDetails() {
-		// TODO Auto-generated method stub
-		return "";
-	}
+  public String getName() {
+    // TODO Auto-generated method stub
+    return "Audio Role";
+  }
 
-	public ConfigurationSection getConfig() {
-		MemoryConfiguration config = new MemoryConfiguration();
-		if(this.audioUrl != null) {
-			config.set("url", this.audioUrl);
-		}
-		return config;
-	}
+  public String getDetails() {
+    // TODO Auto-generated method stub
+    return "";
+  }
 
-	public void loadConfig(ConfigurationSection config) {
-		config.getString("url", null);
-	}
+  public ConfigurationSection getConfig() {
+    MemoryConfiguration config = new MemoryConfiguration();
+    if (this.audioUrl != null) {
+      config.set("url", this.audioUrl);
+    }
+    return config;
+  }
 
-	public void handleFinished(Player p, NPC npc, Stack<Role> s) {
-	}
+  public void loadConfig(ConfigurationSection config) {
+    config.getString("url", null);
+  }
 
-	public void setAudioUrl(String audioUrl) {
-		this.audioUrl = audioUrl;
-	}
+  public void handleFinished(Player p, NPC npc, Stack<Role> s) {
+  }
 
-	public String getAudioUrl() {
-		return audioUrl;
-	}
+  public void setAudioUrl(String audioUrl) {
+    this.audioUrl = audioUrl;
+  }
 
-	public Dialog getConfigureDialog(SpoutPlayer p, NPC npc, Stack<Dialog> d) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+  public String getAudioUrl() {
+    return audioUrl;
+  }
+
+  public Dialog getConfigureDialog(SpoutPlayer p, NPC npc, Stack<Dialog> d) {
+    // TODO Auto-generated method stub
+    return new AudioConfigurator(this, p, npc, d);
+  }
 
 }

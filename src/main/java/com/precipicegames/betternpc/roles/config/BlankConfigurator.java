@@ -8,23 +8,24 @@ import org.getspout.spoutapi.gui.GenericLabel;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.precipicegames.betternpc.NPC;
-import com.precipicegames.tutorialsign.widgets.ConfigDialog;
-import com.precipicegames.tutorialsign.widgets.Dialog;
+import com.precipicegames.betternpc.widgets.ConfigDialog;
+import com.precipicegames.betternpc.widgets.Dialog;
 
 public class BlankConfigurator extends ConfigDialog {
-	private class closeB extends GenericButton {
-		public void onButtonClick(ButtonClickEvent event) {
-			close();
-		}
-	}
-	public BlankConfigurator(SpoutPlayer p, NPC npc,
-			Stack<Dialog> d) {
-		super(p, npc, d);
-		this.mscBody.addChild(new GenericLabel("dummy Window"));
-		this.mscBody.addChild(new closeB().setText("Close"));
-	}
-	@Override
-	public void save() {
-	}
+  private class closeB extends GenericButton {
+    public void onButtonClick(ButtonClickEvent event) {
+      close();
+    }
+  }
+
+  public BlankConfigurator(SpoutPlayer p, NPC npc, Stack<Dialog> d) {
+    super(p, npc, d);
+    this.mscBody.addChild(new GenericLabel("dummy Window"));
+    this.mscBody.addChild(new closeB().setText("Close"));
+  }
+
+  @Override
+  public void save() {
+  }
 
 }

@@ -1,4 +1,4 @@
-author: lachy2901, dotblank	
+author: 'lachy2901 dotblank'
 database: false
 description: Spout enabled NPC management system
 main: com.precipicegames.betternpc.BukkitPlugin
@@ -30,3 +30,6 @@ commands:
     nedit:
         permission: npc.edit
         usage: /nedit - Populates the last selected npc with test code
+    nsave:
+        permission: npc.edit
+        usage: /nsave - Saves all NPCs to disk        

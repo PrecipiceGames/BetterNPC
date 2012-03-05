@@ -9,11 +9,26 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.precipicegames.betternpc.NPC;
 import com.precipicegames.betternpc.Role;
-import com.precipicegames.betternpc.roles.config.MessageConfigurator;
 import com.precipicegames.betternpc.widgets.Dialog;
 
-public class MessageRole implements Role {
-  private String text = "Default text";
+public class WaitRole implements Role {
+  int ticks = 0;
+
+  private class finished implements Runnable {
+    private Player player;
+    private NPC npc;
+    private Stack<Role> stack;
+
+    public finished(Player p, NPC npc, Stack<Role> s) {
+      player = p;
+      this.npc = npc;
+      stack = s;
+    }
+
+    public void run() {
+      handleFinished(player, npc, stack);
+    }
+  }
 
   public void handleFinished(Player p, NPC npc, Stack<Role> s) {
     Role r = s.pop();
@@ -21,41 +36,31 @@ public class MessageRole implements Role {
   }
 
   public void startRole(Player p, NPC npc, Stack<Role> s) {
-    p.sendMessage(getText());
-    handleFinished(p, npc, s);
+    finished task = new finished(p, npc, s);
+    npc.getPlugin().getServer().getScheduler()
+        .scheduleSyncDelayedTask(npc.getPlugin(), task, ticks);
   }
 
   public String getName() {
-    // TODO Auto-generated method stub
-    return "Messege Role";
+    return "Wait Role";
   }
 
   public String getDetails() {
-    // TODO Auto-generated method stub
-    return text;
+    return "Waiting for " + this.ticks + " ticks";
   }
 
   public ConfigurationSection getConfig() {
-    MemoryConfiguration config = new MemoryConfiguration();
-    config.set("message", this.text);
+    ConfigurationSection config = new MemoryConfiguration();
+    config.set("ticks", ticks);
     return config;
   }
 
   public void loadConfig(ConfigurationSection config) {
-    this.text = config.getString("message", "Default text");
-  }
-
-  public void setText(String text) {
-    this.text = text;
-  }
-
-  public String getText() {
-    return text;
+    ticks = config.getInt("ticks", 0);
   }
 
   public Dialog getConfigureDialog(SpoutPlayer p, NPC npc, Stack<Dialog> d) {
     // TODO Auto-generated method stub
-    return new MessageConfigurator(this, p, npc, d);
+    return null;
   }
-
 }
