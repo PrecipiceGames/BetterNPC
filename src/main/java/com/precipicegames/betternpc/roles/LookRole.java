@@ -12,6 +12,7 @@ import com.precipicegames.betternpc.BukkitPlugin;
 import com.precipicegames.betternpc.LocationConfigSerializer;
 import com.precipicegames.betternpc.NPC;
 import com.precipicegames.betternpc.Role;
+import com.precipicegames.betternpc.roles.config.LookConfigurator;
 import com.precipicegames.betternpc.widgets.Dialog;
 
 public class LookRole implements Role {
@@ -60,7 +61,23 @@ public class LookRole implements Role {
   }
 
   public Dialog getConfigureDialog(SpoutPlayer p, NPC npc, Stack<Dialog> d) {
-    // TODO Auto-generated method stub
-    return null;
+    return new LookConfigurator(this, p, npc, d);
   }
+
+  public boolean isTargetplayer() {
+    return targetplayer;
+  }
+
+  public void setTargetplayer(boolean targetplayer) {
+    this.targetplayer = targetplayer;
+  }
+
+  public Location getLooklocation() {
+    return looklocation;
+  }
+
+  public void setLooklocation(Location looklocation) {
+    this.looklocation = looklocation;
+  }
+
 }

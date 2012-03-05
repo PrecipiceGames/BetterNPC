@@ -9,6 +9,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.precipicegames.betternpc.NPC;
 import com.precipicegames.betternpc.Role;
+import com.precipicegames.betternpc.roles.config.WaitConfigurator;
 import com.precipicegames.betternpc.widgets.Dialog;
 
 public class WaitRole implements Role {
@@ -58,9 +59,16 @@ public class WaitRole implements Role {
   public void loadConfig(ConfigurationSection config) {
     ticks = config.getInt("ticks", 0);
   }
+  
+  public int getTicks() {
+    return ticks;
+  }
+  
+  public void setTicks(int ticks) {
+    this.ticks = ticks;
+  }
 
   public Dialog getConfigureDialog(SpoutPlayer p, NPC npc, Stack<Dialog> d) {
-    // TODO Auto-generated method stub
-    return null;
+    return new WaitConfigurator(this,p,npc,d);
   }
 }

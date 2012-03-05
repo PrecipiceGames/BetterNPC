@@ -5,15 +5,7 @@ import java.util.Map.Entry;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-import com.precipicegames.betternpc.roles.AudioRole;
-import com.precipicegames.betternpc.roles.DialogRole;
-import com.precipicegames.betternpc.roles.LookRole;
-import com.precipicegames.betternpc.roles.MessageRole;
-import com.precipicegames.betternpc.roles.RandomRole;
-import com.precipicegames.betternpc.roles.RangeRole;
-import com.precipicegames.betternpc.roles.RightClickRole;
-import com.precipicegames.betternpc.roles.SequenceRole;
-import com.precipicegames.betternpc.roles.SymbolicRole;
+import com.precipicegames.betternpc.roles.*;
 
 public class RoleFactory {
   static private HashMap<String, Class<? extends Role>> roletypes = new HashMap<String, Class<? extends Role>>();
@@ -27,6 +19,7 @@ public class RoleFactory {
     roletypes.put("LookRole", LookRole.class);
     roletypes.put("MessageRole", MessageRole.class);
     roletypes.put("SymbolicRole", SymbolicRole.class);
+    roletypes.put("WaitRole", WaitRole.class);
   }
 
   static public Role newRole(String type, ConfigurationSection cs)
