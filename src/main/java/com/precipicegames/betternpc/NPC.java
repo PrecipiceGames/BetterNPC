@@ -3,14 +3,17 @@ package com.precipicegames.betternpc;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.getspout.spoutapi.gui.GenericPopup;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
+import com.precipicegames.betternpc.roles.unique.SkinRole;
 import com.precipicegames.betternpc.widgets.Dialog;
 import com.topcat.npclib.entity.HumanNPC;
 
@@ -74,30 +77,40 @@ public class NPC implements RoleList {
       // This will always delete an element
       this.delRole(0);
     }
-    if (config.isList("roles")) {
-      List<?> l = config.getList("roles");
-      for (Object o : l) {
-        if (o instanceof ConfigurationSection) {
-          ConfigurationSection s = (ConfigurationSection) o;
-          if (s.isString("type")) {
-            Role r = null;
-            try {
-              r = RoleFactory.newRole(s.getString("type"), s);
-            } catch (Exception e) {
-              invalid();
-            }
+
+    if (!config.isList("roles")) {
+      return;
+    }
+    List<?> l = config.getList("roles");
+    for (Object o : l) {
+      MemoryConfiguration mem = new MemoryConfiguration();
+      if (o instanceof Map<?, ?>) {
+        @SuppressWarnings("unchecked")
+        Map<String, Object> m = (Map<String, Object>) o;
+        ConfigurationSection s = mem.createSection("dummy", m);
+        if (s.isString("type")) {
+          Role r = null;
+          try {
+            r = RoleFactory.newRole(s.getString("type"), s);
             addRole(r);
+          } catch (Exception e) {
           }
         }
       }
     }
   }
 
-  private void invalid() {
-
-  }
-
-  public ConfigurationSection save() {
+  public YamlConfiguration save() {
+    YamlConfiguration config = new YamlConfiguration();
+    config.set("name", name);
+    config.set("location", LocationConfigSerializer.toConfig(spawnloc));
+    List<ConfigurationSection> l = new ArrayList<ConfigurationSection>();
+    for(Role r : this.getRoles()) {
+      ConfigurationSection cs = r.getConfig();
+      cs.set("type", RoleFactory.getName(r.getClass()));
+      l.add(cs);
+    }
+    config.set("roles", l);
     return config;
   }
 
@@ -112,6 +125,15 @@ public class NPC implements RoleList {
   public void respawn() {
     if (humannpc == null || humannpc.getBukkitEntity().isDead()) {
       humannpc = (HumanNPC) plugin.npcman.spawnHumanNPC(name, spawnloc, id);
+    }
+    applySkin();
+  }
+
+  private void applySkin() {
+    Role r = this.getRole(SkinRole.class);
+    if(r != null && r instanceof SkinRole) {
+      SkinRole srole = (SkinRole) r;
+      srole.setSkin(this);
     }
   }
 

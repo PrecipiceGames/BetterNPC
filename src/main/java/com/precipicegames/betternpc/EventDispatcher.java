@@ -9,7 +9,7 @@ import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.precipicegames.betternpc.roles.EndExecutionRole;
-import com.precipicegames.betternpc.roles.RightClickRole;
+import com.precipicegames.betternpc.roles.unique.RightClickRole;
 
 public class EventDispatcher implements Listener {
 

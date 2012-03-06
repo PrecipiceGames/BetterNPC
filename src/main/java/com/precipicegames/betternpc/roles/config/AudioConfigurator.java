@@ -21,6 +21,7 @@ public class AudioConfigurator extends ConfigDialog {
     super(p, npc, d);
     this.role = role;
     path = new GenericTextField();
+    path.setMaximumCharacters(500);
     path.setTooltip("URL for sound file, ogg only");
     this.mscBody.addChild(path);
     this.mscBody.addChild(new ConfigSaveApply(this));

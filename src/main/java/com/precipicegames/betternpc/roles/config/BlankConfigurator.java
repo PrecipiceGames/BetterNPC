@@ -20,7 +20,7 @@ public class BlankConfigurator extends ConfigDialog {
 
   public BlankConfigurator(SpoutPlayer p, NPC npc, Stack<Dialog> d) {
     super(p, npc, d);
-    this.mscBody.addChild(new GenericLabel("dummy Window"));
+    this.mscBody.addChild(new GenericLabel("No Settings!"));
     this.mscBody.addChild(new closeB().setText("Close"));
   }
 

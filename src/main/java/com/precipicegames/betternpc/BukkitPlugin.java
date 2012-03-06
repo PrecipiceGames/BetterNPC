@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.bukkit.command.Command;
@@ -59,6 +60,30 @@ public class BukkitPlugin extends JavaPlugin implements Listener {
     } finally {
       System.out.println(this + ": Loaded configuration file");
     }
+    File dir = new File(this.getDataFolder(), "npcs");
+    dir.mkdirs();
+    for(File f : dir.listFiles()) {
+      if(!f.isFile()) {
+        continue;
+      }
+      if(f.getName().matches("\\.yml$"))
+      {
+        String ID = f.getName().replaceAll("\\.yml$", "");
+        YamlConfiguration npcConfig = new YamlConfiguration();
+        try {
+          npcConfig.load(f);
+        } catch (Exception e) {
+          System.out.println("Error spawning NPC: " + ID);
+          e.printStackTrace();
+          continue;
+        }
+        NPC npc = new NPC(npcConfig.getString("name", "Default"), this, ID, npcConfig);
+        npc.respawn();
+        this.LoadedNPC.put(npc.getId(), npc);
+        System.out.println("Debug NPc spawn " + npc.getHumannpc().getBukkitEntity().getLocation());
+      }
+    }
+    
     plugin = this;
     EventDispatcher disp = new EventDispatcher(this);
     pm.registerEvents(disp, this);
@@ -78,6 +103,26 @@ public class BukkitPlugin extends JavaPlugin implements Listener {
 
   public boolean onCommand(CommandSender sender, Command cmd,
       String commandLabel, String[] args) {
+    
+    if (cmd.getName().equalsIgnoreCase("nsave")) {
+      if (!sender.hasPermission("npc.edit")) {
+        sender
+            .sendMessage("You do not have permission to execute that command");
+      }
+      File dir = new File(this.getDataFolder(), "npcs");
+      dir.mkdirs();
+      for(Entry<String, NPC> entry : this.LoadedNPC.entrySet()) {
+        File f = new File(dir, entry.getKey() + ".yml");
+        YamlConfiguration yaml = entry.getValue().save();
+        try {
+          yaml.save(f);
+        } catch (IOException e) {
+          sender.sendMessage("There was an error while trying to save npc:" + entry.getKey());
+        }
+      }
+      return true;
+    }
+    
     if (!(sender instanceof Player)) {
       sender.sendMessage("This command must be used by a player!");
       return true;

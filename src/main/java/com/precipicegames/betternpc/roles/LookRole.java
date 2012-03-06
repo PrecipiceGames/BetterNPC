@@ -21,7 +21,9 @@ public class LookRole implements Role {
 
   public void startRole(Player p, NPC npc, Stack<Role> s) {
     if (targetplayer) {
-      npc.humannpc.lookAtPoint(p.getLocation());
+      Location loc = p.getLocation().clone();
+      loc.setY(loc.getY()+1.5);
+      npc.humannpc.lookAtPoint(loc);
     } else {
       npc.humannpc.lookAtPoint(looklocation);
     }

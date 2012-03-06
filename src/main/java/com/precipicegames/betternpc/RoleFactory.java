@@ -6,6 +6,9 @@ import java.util.Map.Entry;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.precipicegames.betternpc.roles.*;
+import com.precipicegames.betternpc.roles.unique.OnDeathRole;
+import com.precipicegames.betternpc.roles.unique.RightClickRole;
+import com.precipicegames.betternpc.roles.unique.SkinRole;
 
 public class RoleFactory {
   static private HashMap<String, Class<? extends Role>> roletypes = new HashMap<String, Class<? extends Role>>();
@@ -20,6 +23,11 @@ public class RoleFactory {
     roletypes.put("MessageRole", MessageRole.class);
     roletypes.put("SymbolicRole", SymbolicRole.class);
     roletypes.put("WaitRole", WaitRole.class);
+    roletypes.put("AliasedRole", AliasedRole.class);
+    roletypes.put("EndRole", EndExecutionRole.class);
+    roletypes.put("OnDeathRole", OnDeathRole.class);
+    roletypes.put("RespawnRole", WaitRole.class);
+    roletypes.put("SkinRole", SkinRole.class);
   }
 
   static public Role newRole(String type, ConfigurationSection cs)
