@@ -40,6 +40,7 @@ public class NPCconfigurator extends ConfigDialog {
         roleList.addItem(new RoleWidgetItem(r, roleList.getSize()));
         roleList.renumber();
       }
+      save();
     }
   }
 
@@ -71,6 +72,7 @@ public class NPCconfigurator extends ConfigDialog {
         roleList.renumber();
         roleList.setDirty(true);
       }
+      save();
     }
   }
 
@@ -84,8 +86,9 @@ public class NPCconfigurator extends ConfigDialog {
     GenericContainer top = new GenericContainer();
     top.setLayout(ContainerType.HORIZONTAL);
     newRole = new GenericTextField();
-    newRole.setMaxHeight(15);
+    newRole.setMaxHeight(18);
     newRole.setMaximumCharacters(50);
+    newRole.setMargin(2);
     GenericContainer roleWin = new GenericContainer();
     roleWin.addChild(newRole);
     roleWin.addChild(roleList);

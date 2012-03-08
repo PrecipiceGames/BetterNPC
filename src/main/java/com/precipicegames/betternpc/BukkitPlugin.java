@@ -63,12 +63,15 @@ public class BukkitPlugin extends JavaPlugin implements Listener {
     File dir = new File(this.getDataFolder(), "npcs");
     dir.mkdirs();
     for(File f : dir.listFiles()) {
+      System.out.println("Found file!");
       if(!f.isFile()) {
         continue;
       }
-      if(f.getName().matches("\\.yml$"))
+      System.out.println("Found file!");
+      if(f.getName().endsWith(".yml"))
       {
         String ID = f.getName().replaceAll("\\.yml$", "");
+        System.out.println("Found file! " + ID);
         YamlConfiguration npcConfig = new YamlConfiguration();
         try {
           npcConfig.load(f);
@@ -87,13 +90,13 @@ public class BukkitPlugin extends JavaPlugin implements Listener {
     plugin = this;
     EventDispatcher disp = new EventDispatcher(this);
     pm.registerEvents(disp, this);
-    this.logger.info("Plugin" + pdffile.getName() + " version "
+    this.logger.info(pdffile.getName() + " version "
         + pdffile.getVersion() + " is now enabled.");
   }
 
   public void onDisable() {
     final PluginDescriptionFile pdffile = this.getDescription();
-    this.logger.info("Plugin" + pdffile.getName() + " version "
+    this.logger.info(pdffile.getName() + " version "
         + pdffile.getVersion() + " is now disabled.");
   }
 

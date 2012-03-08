@@ -85,6 +85,7 @@ public class SequenceConfigurator extends ConfigDialog {
     this.mscBody.setLayout(ContainerType.HORIZONTAL);
     roleList = new RoleListWidget(role.getRoles());
     GenericContainer rSide = new GenericContainer();
+    rSide.setMaxWidth(90);
     newRole = new GenericTextField();
     newRole.setMaxHeight(20);
     newRole.setMaximumCharacters(50);

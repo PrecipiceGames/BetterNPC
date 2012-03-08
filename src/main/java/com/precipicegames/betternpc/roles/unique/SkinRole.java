@@ -10,6 +10,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 import com.precipicegames.betternpc.NPC;
 import com.precipicegames.betternpc.Role;
 import com.precipicegames.betternpc.UniqueRole;
+import com.precipicegames.betternpc.roles.config.SkinConfigurator;
 import com.precipicegames.betternpc.widgets.Dialog;
 
 public class SkinRole implements Role, UniqueRole {
@@ -55,8 +56,7 @@ public class SkinRole implements Role, UniqueRole {
   }
 
   public Dialog getConfigureDialog(SpoutPlayer p, NPC npc, Stack<Dialog> d) {
-    // TODO Auto-generated method stub
-    return null;
+    return new SkinConfigurator(this,p,npc,d);
   }
 
   public void setUrl(String url) {

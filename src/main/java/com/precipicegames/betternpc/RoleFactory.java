@@ -26,8 +26,9 @@ public class RoleFactory {
     roletypes.put("AliasedRole", AliasedRole.class);
     roletypes.put("EndRole", EndExecutionRole.class);
     roletypes.put("OnDeathRole", OnDeathRole.class);
-    roletypes.put("RespawnRole", WaitRole.class);
+    roletypes.put("RespawnRole", RespawnRole.class);
     roletypes.put("SkinRole", SkinRole.class);
+    roletypes.put("MoveRole", MoveRole.class);
   }
 
   static public Role newRole(String type, ConfigurationSection cs)

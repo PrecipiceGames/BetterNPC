@@ -21,7 +21,9 @@ public class MessageRole implements Role {
   }
 
   public void startRole(Player p, NPC npc, Stack<Role> s) {
-    p.sendMessage(getText());
+    if(p != null) {
+      p.sendMessage(getText());
+    }
     handleFinished(p, npc, s);
   }
 

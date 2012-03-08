@@ -18,10 +18,12 @@ public class AudioRole implements Role {
   private String audioUrl = null;
 
   public void startRole(Player p, NPC npc, Stack<Role> s) {
-    SpoutPlayer sp = SpoutManager.getPlayer(p);
-    if (this.getAudioUrl() != null && sp.isSpoutCraftEnabled()) {
-      SpoutManager.getSoundManager().playCustomMusic(BukkitPlugin.plugin, sp,
-          this.getAudioUrl(), false);
+    if(p != null) {
+      SpoutPlayer sp = SpoutManager.getPlayer(p);
+      if (this.getAudioUrl() != null && sp.isSpoutCraftEnabled()) {
+        SpoutManager.getSoundManager().playCustomMusic(BukkitPlugin.plugin, sp,
+            this.getAudioUrl(), false);
+      }
     }
     Role r = s.pop();
     r.handleFinished(p, npc, s);

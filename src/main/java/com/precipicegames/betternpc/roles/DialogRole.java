@@ -29,6 +29,10 @@ public class DialogRole implements Role {
   private boolean async;
 
   public void startRole(Player p, NPC npc, Stack<Role> s) {
+    if(p == null) {
+      this.handleFinished(p, npc, s);
+      return;
+    }
     BukkitPlugin.dialog.displayDialog(p, this);
     dialogTimeoutEvent timeoutevent = new dialogTimeoutEvent();
     timeoutevent.p = p;

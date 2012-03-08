@@ -27,9 +27,15 @@ import com.precipicegames.betternpc.widgets.RoleWidgetItem;
 public class SymbolicConfigurator extends ConfigDialog {
 
   private SymbolicRole role;
-  private RoleListWidget roleList;
+  private SymRoleListWidget roleList;
   private LinkField path;
-
+  
+  private class SymRoleListWidget extends RoleListWidget {
+    public void onSelected(int item, boolean doubleClick) {
+      path.setText(push(pop(path.getText()),item));
+      path.setDirty(true);
+    }
+  }
   private class LinkField extends GenericTextField {
     public void onTypingFinished() {
       setSelected(path.getText());
@@ -92,13 +98,7 @@ public class SymbolicConfigurator extends ConfigDialog {
     path = new LinkField();
     path.setText(role.getLinkString());
     path.setMaximumLines(1);
-    Role followed = role.followLink(npc);
-    if (followed != null && followed instanceof RoleList) {
-      RoleList fList = (RoleList) followed;
-      roleList = new RoleListWidget(fList.getRoles());
-    } else {
-      roleList = new RoleListWidget(npc.getRoles());
-    }
+    roleList = new SymRoleListWidget();
     GenericContainer top = new GenericContainer();
     top.setLayout(ContainerType.HORIZONTAL);
     top.addChild(roleList);
@@ -120,7 +120,7 @@ public class SymbolicConfigurator extends ConfigDialog {
     bottom.setMaxHeight(20);
     this.mscBody.addChild(top);
     this.mscBody.addChild(bottom);
-    setSelected(path.getText());
+    setSelected(pop(path.getText()));
   }
 
   public void setSelected(String rpath) {
@@ -129,7 +129,7 @@ public class SymbolicConfigurator extends ConfigDialog {
     try {
       SymbolicRole finder = (SymbolicRole) RoleFactory.newRole("SymbolicRole",
           new MemoryConfiguration());
-      String[] nodes = path.getText().split(":");
+      String[] nodes = rpath.split(":");
       if (!nodes[nodes.length - 1].isEmpty())
         index = Integer.parseInt(nodes[nodes.length - 1]);
       String newPath = pop(path.getText());
