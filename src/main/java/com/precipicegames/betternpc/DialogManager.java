@@ -1,6 +1,7 @@
 package com.precipicegames.betternpc;
 
 import java.util.HashMap;
+import java.util.Stack;
 
 import org.bukkit.entity.Player;
 import org.getspout.spoutapi.SpoutManager;
@@ -15,9 +16,12 @@ import org.getspout.spoutapi.gui.WidgetAnchor;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.precipicegames.betternpc.roles.DialogRole;
+import com.precipicegames.betternpc.roles.unique.RightClickRole;
 
 public class DialogManager {
   private HashMap<Player, Widget> dialogindex;
+  private HashMap<Player, displayTimer> timers;
+  private HashMap<String,DialogRole> activeDialogRoles;
   private BukkitPlugin plugin;
   int WIDTH = 240;
   int HEIGHT = 55;
@@ -25,11 +29,14 @@ public class DialogManager {
   DialogManager(BukkitPlugin p) {
     plugin = p;
     dialogindex = new HashMap<Player, Widget>();
+    activeDialogRoles = new HashMap<String, DialogRole>();
+    timers = new HashMap<Player, displayTimer>();
   }
 
   private class displayTimer implements Runnable {
     private Widget widget;
     private Player player;
+    private boolean invoked;
 
     public displayTimer(Widget w, Player p) {
       widget = w;
@@ -37,11 +44,19 @@ public class DialogManager {
     }
 
     public void run() {
+      if(invoked) {
+        return;
+      }
       Widget olddialog = dialogindex.get(player);
       if (olddialog != null && olddialog == widget) {
         SpoutPlayer sp = SpoutManager.getPlayer(player);
         sp.getMainScreen().removeWidget(olddialog);
       }
+      timers.remove(player);
+    }
+    public void invoke() {
+      run();
+      invoked = true;
     }
   }
 
@@ -57,13 +72,40 @@ public class DialogManager {
     if (olddialog != null) {
       sp.getMainScreen().removeWidget(olddialog);
     }
+    if(!d.isAsync()) {
+      activeDialogRoles.put(p.getName(), d);
+    } else {
+      activeDialogRoles.remove(p.getName());
+    }
     dialogindex.put(p, w);
     sp.getMainScreen().attachWidget(plugin, w);
-    if (displayticks >= 0) {
+    if (displayticks > 0) {
+      displayTimer timer = new displayTimer(w, p);
+      timers.put(p, timer);
       plugin
           .getServer()
           .getScheduler()
-          .scheduleSyncDelayedTask(plugin, new displayTimer(w, p), displayticks);
+          .scheduleSyncDelayedTask(plugin, timer , displayticks);
+    }
+  }
+  public void skip(Player p, Stack<Role> s) {
+    DialogRole dr = activeDialogRoles.get(p.getName());
+    if(dr != null){
+      if(dr.isAsync()) {
+        return;
+      }
+      displayTimer timer = timers.get(p);
+      if(timer != null) {
+        timer.invoke();
+      }
+      dr.abort(s);
+    }
+  }
+  private void clearDialogs(Player p) {
+    SpoutPlayer sp = SpoutManager.getPlayer(p);
+    Widget olddialog = dialogindex.get(p);
+    if (olddialog != null) {
+      sp.getMainScreen().removeWidget(olddialog);
     }
   }
 

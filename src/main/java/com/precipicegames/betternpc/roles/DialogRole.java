@@ -1,5 +1,7 @@
 package com.precipicegames.betternpc.roles;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Stack;
 
 import org.bukkit.configuration.ConfigurationSection;
@@ -11,15 +13,21 @@ import com.precipicegames.betternpc.BukkitPlugin;
 import com.precipicegames.betternpc.NPC;
 import com.precipicegames.betternpc.Role;
 import com.precipicegames.betternpc.roles.config.DialogConfigurator;
+import com.precipicegames.betternpc.roles.unique.RightClickRole;
 import com.precipicegames.betternpc.widgets.Dialog;
 
 public class DialogRole implements Role {
+  private HashMap<Stack<Role>,dialogTimeoutEvent> timers = new HashMap<Stack<Role>,dialogTimeoutEvent>();
   private class dialogTimeoutEvent implements Runnable {
     Player p;
     NPC npc;
     Stack<Role> s;
+    boolean cancelled = false;
 
     public void run() {
+      if(cancelled == true) {
+        return;
+      }
       handleFinished(p, npc, s);
     }
   }
@@ -39,8 +47,19 @@ public class DialogRole implements Role {
     timeoutevent.npc = npc;
     timeoutevent.s = s;
     if (!async) {
-      BukkitPlugin.plugin.getServer().getScheduler()
-          .scheduleSyncDelayedTask(BukkitPlugin.plugin, timeoutevent, time);
+      Iterator<Role> itr = s.iterator();
+      boolean foundRightClick = false;
+      while(itr.hasNext()) {
+        Role r = itr.next();
+        if(r instanceof RightClickRole) {
+          foundRightClick = true;
+        }
+      }
+      this.timers.put(s, timeoutevent);
+      if(time > 0 || foundRightClick == false) {
+        BukkitPlugin.plugin.getServer().getScheduler()
+            .scheduleSyncDelayedTask(BukkitPlugin.plugin, timeoutevent, time);
+      }
     } else {
       this.handleFinished(p, npc, s);
     }
@@ -85,8 +104,20 @@ public class DialogRole implements Role {
   public void setAsync(boolean async) {
     this.async = async;
   }
+  public boolean abort(Stack<Role> s) {
+    dialogTimeoutEvent timer = this.timers.get(s);
+    if(timer != null) {
+      timer.run();
+      return true;
+    }
+    return false;
+  }
 
   public void handleFinished(Player p, NPC npc, Stack<Role> s) {
+    dialogTimeoutEvent timer = this.timers.remove(s);
+    if(timer != null) {
+      timer.cancelled = true;
+    }
     Role r = s.pop();
     r.handleFinished(p, npc, s);
   }
