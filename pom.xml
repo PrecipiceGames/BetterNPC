@@ -1,14 +1,27 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.precipicegames.tutorialsign</groupId>
+    <groupId>com.precipicegames.betterNPC</groupId>
     <artifactId>TutorialSign</artifactId>
-    <version>1.0</version>
-    <name>TutorialSign</name>
-    <url>https://github.com/PrecipiceGames/TutorialSign</url>
+    <version>1.0-SNAPSHOT</version>
+    <name>BetterNPC</name>
+    <url>https://github.com/PrecipiceGames/BetterNPC</url>
+    <distributionManagement>
+        <!-- use the following if you're not using a snapshot version. -->
+        <repository>
+            <id>repo.precipicegames.com</id>
+            <url>http://repo.precipicegames.com/content/repositories/hidden-release</url>
+        </repository>
+
+        <snapshotRepository>
+            <id>repo.precipicegames.com</id>
+            <url>http://repo.precipicegames.com/content/repositories/hidden-snapshots</url>
+        </snapshotRepository>
+
+    </distributionManagement>
     <repositories>
         <repository>
             <id>bukkit-repo</id>
-            <url>http://repo.bukkit.org/artifactory/repo</url>
+            <url>http://repo.bukkit.org/content/groups/public/</url>
         </repository>
 	<repository>
 		<id>spout-repo</id>
